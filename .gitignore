@@ -53,3 +53,12 @@ Thumbs.db
 
 # Crash reports
 crashlytics-build.properties
+
+# Web & Node.js
+node_modules/
+dist/
+dist-ssr/
+*.local
+*.log
+.env
+.env.*

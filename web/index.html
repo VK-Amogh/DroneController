@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FPV Drone Simulator</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="A physics-based FPV drone simulator built with Three.js, featuring three flight modes: Angle, Horizon, and Acro." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Splash / Loading Screen -->
+    <div id="splash">
+      <div class="splash-inner">
+        <div class="splash-logo">
+          <div class="drone-icon">
+            <span class="arm arm-tl"></span>
+            <span class="arm arm-tr"></span>
+            <span class="arm arm-bl"></span>
+            <span class="arm arm-br"></span>
+            <span class="body-center"></span>
+          </div>
+          <h1>FPV<span>SIM</span></h1>
+        </div>
+        <p class="splash-sub">Physics-Based Drone Simulator</p>
+        <div class="loading-bar-wrap">
+          <div class="loading-bar" id="loading-bar"></div>
+        </div>
+        <p class="loading-text" id="loading-text">Initializing physics engine…</p>
+        <button id="launch-btn" class="launch-btn hidden">
+          <span>Launch Simulator</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Controls Legend -->
+    <div id="controls-panel" class="hidden">
+      <div class="ctrl-header">
+        <span>Controls</span>
+        <button id="esp32-btn-panel" class="esp32-panel-btn">ESP32: Connect</button>
+      </div>
+      <div class="ctrl-row"><kbd>ESP32</kbd><span>Tilt: Pitch/Roll Motion (MPU6050)</span></div>
+      <div class="ctrl-row"><kbd>BTN</kbd><span>Buttons 1 & 2: Climb / Descend</span></div>
+      <div class="ctrl-row"><kbd>🖱</kbd><span>Touchpad: Free 3D Aim & Steering</span></div>
+      <div class="ctrl-row"><kbd>W</kbd><span>Fly In Pointed 3D Direction</span></div>
+      <div class="ctrl-row"><kbd>S</kbd><span>Fly Backward</span></div>
+      <div class="ctrl-row"><kbd>A</kbd> <kbd>D</kbd><span>Strafe Left / Right</span></div>
+      <div class="ctrl-row"><kbd>Q</kbd> <kbd>→</kbd><span>Rotate Left on Axis</span></div>
+      <div class="ctrl-row"><kbd>E</kbd> <kbd>←</kbd><span>Rotate Right on Axis</span></div>
+      <div class="ctrl-row"><kbd>↑</kbd> <kbd>↓</kbd><span>Climb / Descend Altitude</span></div>
+      <div class="ctrl-row"><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd><span>Angle / Horizon / Acro</span></div>
+      <div class="ctrl-row"><kbd>R</kbd><span>Reset Drone</span></div>
+      <div class="ctrl-row"><kbd>C</kbd><span>Camera (Chase / Close / FPV)</span></div>
+      <div class="ctrl-row"><kbd>[</kbd> <kbd>]</kbd><span>FPV Uptilt - / +</span></div>
+      <div class="ctrl-row"><kbd>🎮</kbd><span>Gamepad auto-detected (Mode 2)</span></div>
+    </div>
+
+    <!-- OSD Overlay -->
+    <div id="osd" class="hidden">
+      <div class="osd-corner osd-tl">
+        <div class="osd-item" id="osd-mode">MODE: ACRO</div>
+      </div>
+      <div class="osd-corner osd-tr">
+        <button id="esp32-btn" class="esp32-btn" title="Connect ESP32 Motion Controller over USB Serial">🎮 CONNECT ESP32</button>
+        <div class="osd-item" id="osd-thr">THR: 0%</div>
+        <div class="osd-item osd-pad hidden" id="osd-pad"></div>
+      </div>
+      <div class="osd-corner osd-tc">
+        <div class="osd-item osd-rings" id="osd-rings">RINGS: 0/10</div>
+        <div class="osd-item osd-time" id="osd-time">00:00.0</div>
+        <div class="osd-item osd-best" id="osd-best"></div>
+      </div>
+      <div class="osd-corner osd-bl">
+        <div class="osd-item" id="osd-alt">ALT: 0.0 m</div>
+        <div class="osd-item" id="osd-spd">SPD: 0.0 m/s</div>
+      </div>
+      <div class="osd-corner osd-br">
+        <div class="osd-item" id="osd-cam">3RD PERSON</div>
+      </div>
+
+      <div class="osd-crosshair">
+        <div class="crosshair-h"></div>
+        <div class="crosshair-v"></div>
+      </div>
+      <div class="osd-scanline"></div>
+    </div>
+
+    <!-- Three.js Canvas -->
+    <canvas id="sim-canvas"></canvas>
+
+    <!-- Finish banner -->
+    <div id="finish-banner" class="hidden">
+      <div class="finish-inner">
+        <h2>COURSE COMPLETE</h2>
+        <p class="finish-time-label">Your time</p>
+        <div class="finish-time" id="finish-time">00:00.0</div>
+        <p>Press <kbd>R</kbd> to fly again</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
